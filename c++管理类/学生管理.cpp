@@ -18,10 +18,10 @@
 	《1》我们是按照客户给出的详细要求去编写的,收费是按照当时的要求合理收费的。所以后期要求添加功能我们是不做的,
 
 	《2》 拿到程序后尽快测试，并提出问题,由于我们工作量很大,不会一直长时间服务，
-	         发生过用户一个月后半夜让我们修改的事情(请问她这一个月都在干嘛呢？)所以望能谅解
+			 发生过用户一个月后半夜让我们修改的事情(请问她这一个月都在干嘛呢？)所以望能谅解
 
 	《3》我们不包括教会这个程序,小问题可以问我们,定当解答不过有些客户会把代写和辅导混为一谈,到头来我们得到的还是一个差评，
-	         所以请认真阅读。
+			 所以请认真阅读。
 */
 #include <iostream>
 #include <vector>
@@ -116,7 +116,7 @@ public:
 			cin >> choice;
 			cin.clear();
 			cin.sync();
-			if (choice == 'N'|| choice == 'n')
+			if (choice == 'N' || choice == 'n')
 				break;
 		}
 	}
@@ -129,7 +129,7 @@ public:
 		cin >> num;
 
 		//相当于遍历数组
-		for (vector<Student>::iterator it = student.begin(); it!= student.end(); ++it)
+		for (vector<Student>::iterator it = student.begin(); it != student.end(); ++it)
 		{
 			if (it->_num == num)
 			{
@@ -144,6 +144,11 @@ public:
 	//排序学生信息（按总成绩）
 	void sortStudentInfo_totalScore()
 	{
+		if (grade.empty())
+		{
+			cout << "请输入成绩！" << endl;
+			return;
+		}
 		vector<Grade> temp(grade);
 		vector<Student> tempStu(student);
 		//排序函数(冒泡排序)
@@ -186,24 +191,25 @@ public:
 			cout << "*************************************" << endl;
 			cout << "学生" << i + 1 << endl;
 			int choice;
+			float _score;
 			Grade temp;
 			temp._totalCredit = 0;
 			temp._totalScore = 0;
 			temp._num = student[i]._num;
 			cout << "输入班级：";
 			cin >> temp._class;
-			while (true)
-			{
-				float _score;
-				cout << "输入学生各科成绩：";
-				cin >> _score;
-				temp._score.push_back(_score);
-				temp._totalScore += _score;
-				cout << "按0退出输入，1继续：";
-				cin >> choice;
-				if (choice == 0)
-					break;
-			}
+			cout << "输入学生高等数学成绩：";
+			cin >> _score;
+			temp._score.push_back(_score);
+			temp._totalScore += _score;
+			cout << "输入学生程序设计成绩：";
+			cin >> _score;
+			temp._score.push_back(_score);
+			temp._totalScore += _score;
+			cout << "输入学生大学物理成绩：";
+			cin >> _score;
+			temp._score.push_back(_score);
+			temp._totalScore += _score;
 			while (true)
 			{
 				float _credit;
@@ -256,10 +262,9 @@ public:
 			if (grade[i]._num == student[curStudentIndex]._num)
 			{
 				cout << "总成绩：" << grade[i]._totalScore << endl;
-				for (int j = 0; i < grade[i]._score.size(); ++j)
-				{
-					printf("第%d科成绩：%.f\n", j + 1, grade[i]._score[j]);
-				}
+				printf("高等数学成绩：%.f\n",grade[i]._score[0]);
+				printf("程序设计成绩：%.f\n", grade[i]._score[0]);
+				printf("大学物理成绩：%.f\n", grade[i]._score[0]);
 			}
 		}
 		if (grade.empty())
@@ -308,8 +313,16 @@ public:
 			cout << "没有这个学生！" << endl;
 	}
 	//查看学生个人信息(全部 或 个人)
-	void checkPersonageInfo(Student stu)
+	void checkPersonageInfo(int num)
 	{
+		Student stu;
+		for (int i = 0; i < student.size(); ++i)
+			if (student[i]._num == num)
+			{
+				stu = student[i];
+				break;
+			}
+
 		cout << "*********************************************" << endl;
 		cout << "学号：" << stu._num << endl;
 		cout << "姓名：" << stu._name << endl;
@@ -348,11 +361,11 @@ private:
 管理员 学生 教师三种
 账号密码是结构体成员变量；
 */
-class file{
+class file {
 public:
 	file() {}
-	file(vector<Student> s, vector<Grade> g):
-		student(s),grade(g)
+	file(vector<Student> s, vector<Grade> g) :
+		student(s), grade(g)
 	{
 	}
 	vector<Student> getStudent()
@@ -367,9 +380,9 @@ public:
 private:
 	/*打开文件*/
 	bool openFile(string fileNmae, int way)
-	{ 
+	{
 		//写
-		if(way == 0)
+		if (way == 0)
 			fp.open(fileNmae, ios::out);
 		//读
 		if (way == 1)
@@ -398,7 +411,7 @@ public:
 		saveGrade();
 		saveUser();
 	}
-	
+
 public:
 	/*集体读取*/
 	void read()
@@ -428,7 +441,7 @@ private:
 	}
 	void saveGrade()
 	{
-		if (openFile("geade.txt", 0))
+		if (openFile("grade.txt", 0))
 		{
 			for (int i = 0; i < grade.size(); ++i)
 			{//包含学分 班级 成绩 总学分 总成绩 平均成绩
@@ -440,7 +453,7 @@ private:
 				{
 					fp << grade[i]._credit[i] << "\t";
 				}
-				fp << -1;
+				fp << -1 << "\t";
 				for (int j = 0; j < grade[i]._score.size(); ++j)
 				{
 					fp << grade[i]._score[i] << "\t";
@@ -490,7 +503,7 @@ private:
 	}
 	void readGrade()
 	{
-		if (openFile("geade.txt", 2))
+		if (openFile("grade.txt", 2))
 		{
 			closeFile();
 			if (openFile("grade.txt", 1))
@@ -640,13 +653,13 @@ public:
 			case 1:
 				if (temp.empty())
 					cout << "没有信息" << endl;
-				else 
-					op.checkPersonageInfo(temp[op.curStudentIndex]);
-					break;
+				else
+					op.checkPersonageInfo(temp[op.curStudentIndex]._num);
+				break;
 			case 2:
 				if (temp.empty())
 					cout << "没有信息" << endl;
-				else 
+				else
 					op.updateStudentInfo(temp[op.curStudentIndex]._num);
 				break;
 			case 3:
@@ -655,7 +668,7 @@ public:
 			case 4:
 				if (temp.empty())
 					cout << "没有信息" << endl;
-				else 
+				else
 					op.checkPersonageGrade();
 				break;
 			default:cout << "输入错误!" << endl;
@@ -679,6 +692,7 @@ public:
 			cout << "<2>查看班级平均分" << endl;
 			cout << "<3>查看全部学生信息" << endl;
 			cout << "<4>查看学生个人信息" << endl;
+			cout << "<5>按成绩排序学生信息" << endl;
 			cin >> choice;
 			switch (choice)
 			{
@@ -691,8 +705,8 @@ public:
 				op.checkClassAvgScore();
 				break;
 			case 3:
-				for(int i = 0;i < temp.size();++i)
-					op.checkPersonageInfo(temp[i]);
+				for (int i = 0; i < temp.size(); ++i)
+					op.checkPersonageInfo(temp[i]._num);
 				break;
 			case 4:
 			{
@@ -702,23 +716,25 @@ public:
 				for (int i = 0; i < temp.size(); ++i)
 				{
 					if (temp[i]._num == num)
-						op.checkPersonageInfo(temp[i]);
+						op.checkPersonageInfo(temp[i]._num);
 				}
 				break;
 			}
+			case 5:
+				op.sortStudentInfo_totalScore();
 			default:cout << "输入错误!" << endl;
 				break;
 			}
 			system("pause");
 		}
-			
+
 	}
 
 	/*管理员菜单*/
 	void adminMenu()
 	{
 		//管理员 1、录入学生信息    2、查询学生信息 3、删除学生信息     4、修改学生信息
-		while(true)
+		while (true)
 		{
 			vector<Student> temp(op.getStudent());
 			system("cls");
@@ -744,7 +760,7 @@ public:
 				for (int i = 0; i < temp.size(); ++i)
 				{
 					if (temp[i]._num == num)
-						op.checkPersonageInfo(temp[i]);
+						op.checkPersonageInfo(temp[i]._num);
 				}
 				break;
 			}
@@ -758,7 +774,7 @@ public:
 				cin >> num;
 				op.updateStudentInfo(num);
 			}
-				break;
+			break;
 			default:cout << "输入错误!" << endl;
 				break;
 			}

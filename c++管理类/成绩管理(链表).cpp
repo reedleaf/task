@@ -1,4 +1,4 @@
-################################
+/*################################
 .      原创代写，诚信可靠；
 .      注释详细，编码工整；
 .      水平一流，讲解易懂；
@@ -17,10 +17,10 @@
 	《1》我们是按照客户给出的详细要求去编写的,收费是按照当时的要求合理收费的。所以后期要求添加功能我们是不做的,
 
 	《2》 拿到程序后尽快测试，并提出问题,由于我们工作量很大,不会一直长时间服务，
-	         发生过用户一个月后半夜让我们修改的事情(请问她这一个月都在干嘛呢？)所以望能谅解
+			 发生过用户一个月后半夜让我们修改的事情(请问她这一个月都在干嘛呢？)所以望能谅解
 
 	《3》我们不包括教会这个程序,小问题可以问我们,定当解答不过有些客户会把代写和辅导混为一谈,到头来我们得到的还是一个差评，
-	         所以请认真阅读。
+			 所以请认真阅读。
 */
 #define _CRT_SECURE_NO_WARNINGS
 # include <iostream>
@@ -75,7 +75,9 @@ public:
 	void ShowMenu();
 	void Find();
 	void Save();
-	bool Recover();
+	void SaveRemove(Student*);
+	void Recover();
+	bool Read();
 	void ModifyItem();
 	void RemoveItem();
 	void Swap(Student *, Student *);
@@ -125,7 +127,7 @@ Studentmassage::Studentmassage()
 	Head = new Student;
 	Head->Next = new Student;
 	End = Head->Next;
-	if (!Recover())
+	if (!Read())
 		cout << "这是一个新系统，无学生信息。请先输入。" << endl;
 	else
 		cout << "\t\t读取学生信息成功!" << endl;
@@ -231,6 +233,40 @@ void Studentmassage::ModifyItem()     //修改信息
 	}
 }
 
+//﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌保存删除信息﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌
+void Studentmassage::SaveRemove(Student *p)
+{
+	out.open("remove.txt",ios::out);
+	out << p->name << "\t" << p->Id << "\t" << p->math << "\t"
+		<< p->chemi << "\t" << p->physics << "\t" << p->internet << "\t" << p->English << "\t";
+	out.close();
+}
+
+//﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌恢复信息﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌
+void Studentmassage::Recover()
+{
+	infile.open("remove.txt");
+	if (!infile.is_open())
+	{
+		cout << "没有删除信息!" << endl;
+		return;
+	}
+	if (infile.peek() != EOF)
+	{
+		infile >> End->name >> End->Id >> End->math >>
+			End->chemi >> End->physics >> End->internet >> End->English;
+		End->Calculate();
+		End->Next = new Student;
+		End = End->Next;
+		cout << "恢复成功！" << endl;
+	}
+	else
+		cout << "没有删除的信息！" << endl;
+	infile.close();
+	cout << "输入任意字符！继续……";
+	_getch();
+}
+
 //﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌删除信息﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌
 void Studentmassage::RemoveItem()         // 删除信息
 {
@@ -239,6 +275,7 @@ void Studentmassage::RemoveItem()         // 删除信息
 	cout << "\t\t请输入要删除的学生的姓名:" << endl; cin >> name;
 	if (p = FindItem(name))
 	{
+		SaveRemove(p->Next);
 		temp = p->Next;
 		p->Next = p->Next->Next;
 		delete temp;
@@ -338,47 +375,47 @@ void Studentmassage::statistic()
 	{
 		a1 = a1 + p->math;
 		{
-			if (p->math == 100){s1++; b1 = (s1 / n) * 100;}
-			else if (p->math >= 90 && p->math <= 99){s2++; b2 = (s2 / n) * 100;}
-			else if (p->math >= 80 && p->math <= 89){s3++; b3 = (s3 / n) * 100;}
-			else if (p->math >= 70 && p->math <= 79){s4++; b4 = (s4 / n) * 100;}
-			else if (p->math >= 60 && p->math <= 69){s5++; b5 = (s5 / n) * 100;}
-			else {s6++; b6 = (s6 / n) * 100;}
+			if (p->math == 100) { s1++; b1 = (s1 / n) * 100; }
+			else if (p->math >= 90 && p->math <= 99) { s2++; b2 = (s2 / n) * 100; }
+			else if (p->math >= 80 && p->math <= 89) { s3++; b3 = (s3 / n) * 100; }
+			else if (p->math >= 70 && p->math <= 79) { s4++; b4 = (s4 / n) * 100; }
+			else if (p->math >= 60 && p->math <= 69) { s5++; b5 = (s5 / n) * 100; }
+			else { s6++; b6 = (s6 / n) * 100; }
 		}
 		a2 = a2 + p->chemi;
 		{
-			if (p->chemi == 100){h1++; c1 = (h1 / n) * 100;}
-			else if (p->chemi >= 90 && p->chemi <= 99){h2++; c2 = (h2 / n) * 100;}
-			else if (p->chemi >= 80 && p->chemi <= 89){h3++; c3 = (h3 / n) * 100;}
-			else if (p->chemi >= 70 && p->chemi <= 79){h4++; c4 = (h4 / n) * 100;}
-			else if (p->chemi >= 60 && p->chemi <= 69){h5++; c5 = (h5 / n) * 100;}
-			else {h6++; c6 = (h6 / n) * 100;}
+			if (p->chemi == 100) { h1++; c1 = (h1 / n) * 100; }
+			else if (p->chemi >= 90 && p->chemi <= 99) { h2++; c2 = (h2 / n) * 100; }
+			else if (p->chemi >= 80 && p->chemi <= 89) { h3++; c3 = (h3 / n) * 100; }
+			else if (p->chemi >= 70 && p->chemi <= 79) { h4++; c4 = (h4 / n) * 100; }
+			else if (p->chemi >= 60 && p->chemi <= 69) { h5++; c5 = (h5 / n) * 100; }
+			else { h6++; c6 = (h6 / n) * 100; }
 		}
 		a3 = a3 + p->physics;
 		{
-			if (p->physics == 100){w1++; d1 = (w1 / n) * 100;}
-			else if (p->physics >= 90 && p->physics <= 99){w2++; d2 = (w2 / n) * 100;}
-			else if (p->physics >= 80 && p->physics <= 89){w3++; d3 = (w3 / n) * 100;}
-			else if (p->physics >= 70 && p->physics <= 79){w4++; d4 = (w4 / n) * 100;}
-			else if (p->physics >= 60 && p->physics <= 69){w5++; d5 = (w5 / n) * 100;}
-			else {w6++; d6 = (w6 / n) * 100;}
+			if (p->physics == 100) { w1++; d1 = (w1 / n) * 100; }
+			else if (p->physics >= 90 && p->physics <= 99) { w2++; d2 = (w2 / n) * 100; }
+			else if (p->physics >= 80 && p->physics <= 89) { w3++; d3 = (w3 / n) * 100; }
+			else if (p->physics >= 70 && p->physics <= 79) { w4++; d4 = (w4 / n) * 100; }
+			else if (p->physics >= 60 && p->physics <= 69) { w5++; d5 = (w5 / n) * 100; }
+			else { w6++; d6 = (w6 / n) * 100; }
 		}
 		a4 = a4 + p->internet;
 		{
-			if (p->internet == 100){wl1++; e1 = (wl1 / n) * 100;}
-			else if (p->internet >= 90 && p->internet <= 99){wl2++; e2 = (wl2 / n) * 100;}
-			else if (p->internet >= 80 && p->internet <= 89){wl3++; e3 = (wl3 / n) * 100;}
-			else if (p->internet >= 70 && p->internet <= 79){wl4++; e4 = (wl4 / n) * 100;}
-			else if (p->internet >= 60 && p->internet <= 69){wl5++; e5 = (wl5 / n) * 100;}
-			else {wl6++; e6 = (wl6 / n) * 100;}
+			if (p->internet == 100) { wl1++; e1 = (wl1 / n) * 100; }
+			else if (p->internet >= 90 && p->internet <= 99) { wl2++; e2 = (wl2 / n) * 100; }
+			else if (p->internet >= 80 && p->internet <= 89) { wl3++; e3 = (wl3 / n) * 100; }
+			else if (p->internet >= 70 && p->internet <= 79) { wl4++; e4 = (wl4 / n) * 100; }
+			else if (p->internet >= 60 && p->internet <= 69) { wl5++; e5 = (wl5 / n) * 100; }
+			else { wl6++; e6 = (wl6 / n) * 100; }
 		}
 		a5 = a5 + p->English;
 		{
-			if (p->English == 100){y1++; f1 = (y1 / n) * 100;}
-			else if (p->English >= 90 && p->English <= 99){y2++; f2 = (y2 / n) * 100;}
-			else if (p->English >= 80 && p->English <= 89){y3++; f3 = (y3 / n) * 100;}
-			else if (p->English >= 70 && p->English <= 79){y4++; f4 = (y4 / n) * 100;}
-			else if (p->English >= 60 && p->English <= 69){y5++; f5 = (y5 / n) * 100;}
+			if (p->English == 100) { y1++; f1 = (y1 / n) * 100; }
+			else if (p->English >= 90 && p->English <= 99) { y2++; f2 = (y2 / n) * 100; }
+			else if (p->English >= 80 && p->English <= 89) { y3++; f3 = (y3 / n) * 100; }
+			else if (p->English >= 70 && p->English <= 79) { y4++; f4 = (y4 / n) * 100; }
+			else if (p->English >= 60 && p->English <= 69) { y5++; f5 = (y5 / n) * 100; }
 			else y6++; f6 = (y6 / n) * 100;
 		}
 	}
@@ -450,7 +487,7 @@ void Studentmassage::Save()
 
 
 //﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌恢复函数﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌
-bool Studentmassage::Recover()
+bool Studentmassage::Read()
 {
 	infile.open("sort.txt");
 	if (!infile.is_open())
@@ -501,8 +538,8 @@ int main()
 		case 5:Grade.RemoveItem(); break;/*删除*/
 		case 6:Grade.ModifyItem(); break;/*修改*/
 		case 7:Grade.statistic(); break;/*统计*/
+		case 8:Grade.Recover(); break;
 		}
 	}
 	return 0;
 }
-
