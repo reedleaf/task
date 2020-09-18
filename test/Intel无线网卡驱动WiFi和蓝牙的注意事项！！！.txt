@@ -1,0 +1,43 @@
+itlwm.kext这个驱动是驱动WIFI的，支持3系，7系，8系、9系Intel无线网卡
+itlwmx.kext这个也是驱动WiFi的，支持二代设备，（笼统来讲，ax系列的网卡都是二代设备，另外有些9系设备（9461、9462、9560）等，虽然是9系，但是mac层是ax系，所以还是二代设备，这类设备用itlwm是驱动不了的，得用itlwmx，但是现在也还不支持。）
+HeliPort.app是Intel无线网卡客户端，后续可以通过这个客户端来连接WiFi
+
+itlwm.kext（itlwmx.kext同理）使用方法：
+1.右键itlwm.kext，选择显示包内容，找到info.plist
+2.打开编辑，搜索WiFiConfig，修改ssid（WiFi名）和password（密码）
+3.保存info.plist
+4.把itlwm.kext放入引导工具的kexts文件夹，clover引导，放入kexts/other文件夹就行，oc引导，放入kexts文件夹，并且config指定这个驱动
+
+注：修改ssid和password时，，可以把WIFI_2、WiFi_3和WiFi_4这三个删除，只留一个WiFi_1，后续通过HeliPort.app连接以及修改WiFi
+
+驱动发布以及问题报告地址：http://bbs.pcbeta.com/viewthread-1848662-1-1.html
+https://github.com/zxystd/itlwm
+
+
+
+
+蓝牙固件上传驱动，
+IntelBluetoothFirmware.kext用于上传固件
+IntelBluetoothInjector.kext用于修复系统设置内的蓝牙开关
+这两个驱动放入引导工具kexts文件夹就行
+
+适配ID：
+0x8087, 0x0a2a
+0x8087, 0x07dc
+0x8087, 0x0aa7
+0x8087, 0x0025
+0x8087, 0x0aaa
+0x8087, 0x0026
+0x8087, 0x0029
+0x8087, 0x0a2b
+
+驱动发布地址：https://github.com/zxystd/IntelBluetoothFirmware/releases
+问题报告地址：https://github.com/zxystd/IntelBluetoothFirmware/issues
+
+无法加载的请提供日志，命令
+log show --last boot | grep IntelFirmware
+
+[4.1]更新1.0.3版本
+1.更新固件版本为最新,添加ax201的支持.
+2.添加固件转换脚本,用户可以删除除了自己要用的固件文件,然后重新编译,这样可以减小kext的体积,加快启动速度.
+3.修正依赖库版本,解决10.14、10.13等版本无法加载问题.
