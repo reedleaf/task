@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/StackAndQueue.dir/stack.cpp.o CMakeFiles/StackAndQueue.dir/queue.cpp.o CMakeFiles/StackAndQueue.dir/括号匹配.cpp.o  -o StackAndQueue 
