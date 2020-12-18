@@ -1,6 +1,0 @@
-S=0.00;path=<>
-K=12.00;path=<S,K>
-L=8.50;path=<S,L>
-M=5.50;path=<S,M>
-N=12.50;path=<S,L,N>
-O=20.50;path=<S,M,O>
