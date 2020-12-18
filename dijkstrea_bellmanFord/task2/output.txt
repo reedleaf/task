@@ -1,0 +1,6 @@
+S=0.00;path=<>
+U=12.00;path=<S,U>
+V=8.50;path=<S,V>
+W=5.50;path=<S,W>
+X=12.50;path=<S,V,X>
+Y=20.50;path=<S,W,Y>
